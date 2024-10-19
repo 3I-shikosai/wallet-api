@@ -1,0 +1,9 @@
+FROM postgres:latest
+
+ENV TZ Asia/Tokyo
+ENV LC_ALL en_US.UTF-8
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD postgres
+
+EXPOSE 5432

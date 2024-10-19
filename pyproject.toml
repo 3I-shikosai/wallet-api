@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "wallet-api"
+version = "0.1.0"
+description = "API server for shikosai wallet app."
+authors = ["st22182ti <st22182ti@gm.ibaraki-ct.ac.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.2"
+gunicorn = "^23.0.0"
+uvicorn-worker = "^0.2.0"
+shortuuid = "^1.0.13"
+psycopg2-binary = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
