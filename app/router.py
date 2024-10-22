@@ -132,6 +132,18 @@ def set_balance(
 
 
 # --------------------------------------
+# 管理者パスワードを認証
+# --------------------------------------
+@router.post("/api/admin/verify_password")
+def verify_password(request: schemas.VerifyPassword):
+
+    if services.verify_password(request.password):
+        return {"success": True}
+    else:
+        return {"success": False}
+
+
+# --------------------------------------
 # 残高を同期
 # --------------------------------------
 @router.get("/api/user/sync/{user_id}")

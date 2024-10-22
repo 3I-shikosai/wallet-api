@@ -37,6 +37,10 @@ class SetBalance(BaseModel):
     balance: int
 
 
+class VerifyPassword(BaseModel):
+    password: str
+
+
 # -------------- Common ------------------
 
 
