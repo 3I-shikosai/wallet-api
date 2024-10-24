@@ -66,8 +66,22 @@ def init_db():
                     "balance INTEGER,"
                     "logged_in BOOLEAN DEFAULT FALSE);"
                 )
+                #                conn.commit()
+                print('[DB INIT] Created Table "users"')
+
+                # スマホを持っていない人用のユーザーを作成
+                for i in range(10000000, 10000100):
+                    user_id = str(i)
+                    cur.execute(
+                        "INSERT INTO users "
+                        "(user_id, balance, logged_in) "
+                        "VALUES "
+                        f"('{user_id}', { config.INITIAL_BALANCE }, true);"
+                    )
                 conn.commit()
-                print('[DB INIT] Created Table "user"')
+                print(
+                    "[DB INIT] Created 10000000-100001000 users --------------"
+                )
 
 
 class UserService:
