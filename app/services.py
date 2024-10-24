@@ -64,7 +64,7 @@ def init_db():
                     "CREATE TABLE users ("
                     "user_id CHAR(8) PRIMARY KEY,"
                     "balance INTEGER,"
-                    "waiting BOOLEAN DEFAULT TRUE);"
+                    "logged_in BOOLEAN DEFAULT FALSE);"
                 )
                 conn.commit()
                 print('[DB INIT] Created Table "user"')
@@ -188,8 +188,8 @@ class UserService:
         try:
             with self.__conn.cursor() as cur:
                 cur.execute(
-                    "UPDATE users SET waiting = "
-                    "FALSE "
+                    "UPDATE users SET logged_in = "
+                    "TRUE "
                     "WHERE user_id = "
                     f"'{user_id}';"
                 )
@@ -206,7 +206,7 @@ class UserService:
         try:
             with self.__conn.cursor() as cur:
                 cur.execute(
-                    f"SELECT waiting FROM users WHERE user_id = '{user_id}';"
+                    f"SELECT logged_in FROM users WHERE user_id = '{user_id}';"
                 )
                 user_record = cur.fetchone()
 

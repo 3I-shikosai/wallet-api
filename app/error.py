@@ -22,3 +22,6 @@ class ErrorResponse:
     USER_DELETION_FAILED = ErrorResponseFormat(
         message="USER_DELETION_FAILED", error_code=4
     ).model_dump()
+    USER_ALREADY_LOGGED_IN = ErrorResponseFormat(
+        message="USER_ALREADY_LOGGED_IN", error_code=5
+    ).model_dump()

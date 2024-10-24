@@ -10,3 +10,4 @@ run:
 
 stop:
 	podman stop postgres
+	podman rm postgres

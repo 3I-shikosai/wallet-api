@@ -174,6 +174,20 @@ def login(
 ):
     user_handle = services.UserService(db_conn)
 
+    # ログイン済みか確認
+    is_logged_in = user_handle.is_logged_in(user_id)
+
+    if is_logged_in is None:
+        raise HTTPException(
+            status_code=400, detail=ErrorResponse.USER_NOT_FOUND
+        )
+
+    # ログイン済みの場合はエラー(error_code: 5)
+    if is_logged_in:
+        raise HTTPException(
+            status_code=400, detail=ErrorResponse.USER_ALREADY_LOGGED_IN
+        )
+
     response = user_handle.login(user_id)
 
     if response is None:
@@ -181,24 +195,4 @@ def login(
             status_code=400, detail=ErrorResponse.USER_NOT_FOUND
         )
 
-    return response
-
-
-# --------------------------------------
-# ログイン済みか確認
-# --------------------------------------
-@router.get("/api/admin/is_logged_in/{user_id}")
-def is_logged_in(
-    user_id: str,
-    db_conn: connection = Depends(services.get_conn),
-):
-
-    user_handle = services.UserService(db_conn)
-
-    response = user_handle.is_logged_in(user_id)
-
-    if response is None:
-        raise HTTPException(
-            status_code=400, detail=ErrorResponse.USER_NOT_FOUND
-        )
     return response
