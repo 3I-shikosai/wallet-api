@@ -62,8 +62,9 @@ def init_db():
             else:
                 cur.execute(
                     "CREATE TABLE users ("
-                    "user_id char(8) PRIMARY KEY,"
-                    "balance integer);"
+                    "user_id CHAR(8) PRIMARY KEY,"
+                    "balance INTEGER,"
+                    "waiting BOOLEAN DEFAULT FALSE);"
                 )
                 conn.commit()
                 print('[DB INIT] Created Table "user"')
@@ -179,3 +180,41 @@ class UserService:
         except Exception as e:
             self.__conn.rollback()
             print(f"[DB ERROR] set_balance: {e}")
+
+    # --------------------------------------------
+    # ユーザーの待機状態を変更
+    # --------------------------------------------
+    def login(self, user_id: str):
+        try:
+            with self.__conn.cursor() as cur:
+                cur.execute(
+                    "UPDATE users SET waiting = "
+                    "TRUE "
+                    "WHERE user_id = "
+                    f"'{user_id}';"
+                )
+                self.__conn.commit()
+            return self.get_data(user_id)
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"[DB ERROR] login: {e}")
+
+    # --------------------------------------------
+    # ユーザーの待機状態を取得
+    # --------------------------------------------
+    def is_logged_in(self, user_id: str):
+        try:
+            with self.__conn.cursor() as cur:
+                cur.execute(
+                    f"SELECT waiting FROM users WHERE user_id = '{user_id}';"
+                )
+                user_record = cur.fetchone()
+
+                # もし合致するuser_idがなかったら -> None
+                if user_record is None:
+                    return None
+
+                return user_record[0]
+
+        except Exception as e:
+            print(f"[DB ERROR] is_logged_in: {e}")

@@ -162,3 +162,43 @@ def sync_data(
         )
 
     return response
+
+
+# --------------------------------------
+# ログイン
+# --------------------------------------
+@router.get("/api/user/login/{user_id}")
+def login(
+    user_id: str,
+    db_conn: connection = Depends(services.get_conn),
+):
+    user_handle = services.UserService(db_conn)
+
+    response = user_handle.login(user_id)
+
+    if response is None:
+        raise HTTPException(
+            status_code=400, detail=ErrorResponse.USER_NOT_FOUND
+        )
+
+    return response
+
+
+# --------------------------------------
+# ログイン済みか確認
+# --------------------------------------
+@router.get("/api/admin/is_logged_in/{user_id}")
+def is_logged_in(
+    user_id: str,
+    db_conn: connection = Depends(services.get_conn),
+):
+
+    user_handle = services.UserService(db_conn)
+
+    response = user_handle.is_logged_in(user_id)
+
+    if response is None:
+        raise HTTPException(
+            status_code=400, detail=ErrorResponse.USER_NOT_FOUND
+        )
+    return response
